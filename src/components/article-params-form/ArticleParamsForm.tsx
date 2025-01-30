@@ -1,20 +1,31 @@
 import { ArrowButton } from 'src/ui/arrow-button';
-import { Button } from 'src/ui/button';
+import React, {useEffect, useState} from "react";
+import {FormStyleProps, SideForm} from "components/side-form/SideForm";
 
-import styles from './ArticleParamsForm.module.scss';
+type ArticleParamsFormProps = {
+	isOpen: boolean;
+	onClick: () => void;
+	onChange?: (selected: FormStyleProps) => void;
+	onUpdate?: (selected: FormStyleProps) => void;
+	items: FormStyleProps;
+}
 
-export const ArticleParamsForm = () => {
+export const ArticleParamsForm = ({isOpen, onClick, onUpdate, items}: ArticleParamsFormProps) => {
+	const [style, setStyle] = useState(items);
+	const [option, setOption] = useState(style.fontFamily.value);
+
+	useEffect(()=> {
+	}, [style, handleOptionClick]);
+
+	function handleOptionClick(option: FormStyleProps, hook: (opt: FormStyleProps) => void) {
+		hook(option);
+		onUpdate?.(option);
+	}
+
 	return (
 		<>
-			<ArrowButton isOpen={false} onClick={() => {}} />
-			<aside className={styles.container}>
-				<form className={styles.form}>
-					<div className={styles.bottomContainer}>
-						<Button title='Сбросить' htmlType='reset' type='clear' />
-						<Button title='Применить' htmlType='submit' type='apply' />
-					</div>
-				</form>
-			</aside>
+			<ArrowButton isOpen={isOpen} onClick={onClick} />
+			<SideForm isOpen={isOpen} style={style} onUpdate={(option)=> handleOptionClick(option, setStyle)}/>
 		</>
 	);
 };

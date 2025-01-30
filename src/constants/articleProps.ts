@@ -18,14 +18,26 @@ export type OptionType = {
 export const fontFamilyOptions: OptionType[] & {
 	optionClassName?: FontFamiliesClasses;
 } = [
-	{ title: 'Open Sans', value: 'Open Sans', className: fontFamilyClasses[0] },
-	{ title: 'Ubuntu', value: 'Ubuntu', className: fontFamilyClasses[1] },
+	{
+		title: 'Open Sans',
+		value: 'Open Sans',
+		className: fontFamilyClasses[0]
+	},
+	{
+		title: 'Ubuntu',
+		value: 'Ubuntu',
+		className: fontFamilyClasses[1]
+	},
 	{
 		title: 'Cormorant Garamond',
 		value: 'Cormorant Garamond',
 		className: fontFamilyClasses[2],
 	},
-	{ title: 'Days One', value: 'Days One', className: fontFamilyClasses[3] },
+	{
+		title: 'Days One',
+		value: 'Days One',
+		className: fontFamilyClasses[3]
+	},
 	{
 		title: 'Merriweather',
 		value: 'Merriweather',
@@ -169,11 +181,11 @@ export const fontSizeOptions: OptionType[] = [
 ];
 
 export const defaultArticleState = {
-	fontFamilyOption: fontFamilyOptions[0],
+	fontFamilyOption: fontFamilyOptions[2],
 	fontColor: fontColors[0],
-	backgroundColor: backgroundColors[0],
-	contentWidth: contentWidthArr[0],
-	fontSizeOption: fontSizeOptions[0],
+	backgroundColor: backgroundColors[3],
+	contentWidth: contentWidthArr[1],
+	fontSizeOption: fontSizeOptions[1],
 };
 
 export type ArticleStateType = typeof defaultArticleState;
