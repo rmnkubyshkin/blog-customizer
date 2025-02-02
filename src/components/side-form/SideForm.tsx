@@ -6,12 +6,16 @@ import {
 	contentWidthArr,
 	fontColors,
 	fontFamilyOptions,
-	fontSizeOptions, OptionType
+	fontSizeOptions,
+	OptionType
 } from "src/constants/articleProps";
 import {RadioGroup} from "src/ui/radio-group";
 import {Separator} from "src/ui/separator";
 import {Button} from "src/ui/button";
-import {defaultStyle} from "src/index";
+import {Text} from "src/ui/text";
+import clsx from "clsx";
+import {defaultStyle} from "components/article-params-form/ArticleParamsForm";
+
 
 export type SideFormProps = {
 	isOpen: boolean;
@@ -32,12 +36,12 @@ export const SideForm = ({ isOpen, style, onUpdate }: SideFormProps) => {
 
 	const sepRef = useRef(null);
 
-	const [translate, setTranslate] = useState('translate(-616px)');
-	useEffect(() => {
-		isOpen? setTranslate('translate(0)'):setTranslate('translate(-616px)')
-	}, [isOpen])
-
 	const [generalState, setGeneralState] = useState(style);
+
+	const openingFormCondition = clsx({
+		[styles.container] : true,
+		[styles.container_open] : isOpen
+	});
 
 	const [selectedFontStyle, setSelectedFontStyle] = useState(style.fontFamily);
 	const [selectedFontSize, setSelectedFontSize] = useState(style.fontSize);
@@ -62,7 +66,7 @@ export const SideForm = ({ isOpen, style, onUpdate }: SideFormProps) => {
 		setGeneralState(updatedStyle);
 	}, [selectedFontStyle, selectedBackgroundColor, selectedFontSize, selectedFontColor, selectedContentWidth]);
 
-	function submitStyle(e: React.MouseEvent<Element, MouseEvent>): void {
+	function submitStyle(e: React.FormEvent<HTMLFormElement>): void {
 		e.preventDefault();
 		onUpdate?.(generalState);
 	}
@@ -77,10 +81,17 @@ export const SideForm = ({ isOpen, style, onUpdate }: SideFormProps) => {
 
 	return (
 		<>
-			<aside className={styles.container} style={{transform: translate}}>
-				<form className={styles.form}>
+			<aside className={openingFormCondition}>
+				<form className={styles.form} onSubmit={e => submitStyle(e)}>
 					<div className={styles.title}>
-						<h1 className={styles.h1} >Задайте параметры</h1>
+						<Text family='open-sans'
+							  as='h2'
+							  align='left'
+							  fontStyle='normal'
+							  weight={800}
+							  size={31}
+							  uppercase={true}>
+							Задайте параметры</Text>
 					</div>
 					<div className='body'>
 						<Select title={"Шрифт"}
@@ -118,8 +129,7 @@ export const SideForm = ({ isOpen, style, onUpdate }: SideFormProps) => {
 						<Button title='Сбросить' htmlType='reset' type='clear'
 								onClick={resetStyle}
 						/>
-						<Button title='Применить' htmlType='submit' type='apply'
-								onClick={submitStyle}/>
+						<Button title='Применить' htmlType='submit' type='apply'/>
 					</div>
 				</form>
 			</aside>
