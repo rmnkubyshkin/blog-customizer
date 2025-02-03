@@ -3,6 +3,7 @@ import React, {useRef, useState} from "react";
 import {FormStyleProps, SideForm} from "components/side-form/SideForm";
 import {defaultArticleState} from "src/constants/articleProps";
 import {useOutsideClickClose} from "src/ui/select/hooks/useOutsideClickClose";
+import {useClose} from "components/article-params-form/hooks/useClose";
 
 export const defaultStyle = {
 	"fontFamily": defaultArticleState.fontFamilyOption,
@@ -13,34 +14,29 @@ export const defaultStyle = {
 };
 
 type ArticleParamsFormProps = {
-	isOpen: boolean;
-	onClick: () => void;
-	onChange?: (selected: FormStyleProps) => void;
 	onUpdate?: (style: FormStyleProps) => void;
 }
 
-export const ArticleParamsForm = ({isOpen, onClick, onUpdate}: ArticleParamsFormProps) => {
+export const ArticleParamsForm = ({onUpdate}: ArticleParamsFormProps) => {
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [style, setStyle] = useState(defaultStyle);
 
 	function handleOptionClick(option: FormStyleProps, hook: (opt: FormStyleProps) => void) {
 		hook(option);
 		onUpdate?.(option);
-		onClick?.();
+		setIsMenuOpen(!isMenuOpen);
 	}
-	const formRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
-
-	useOutsideClickClose({
-		isOpen,
+	const formRef= useRef<HTMLDivElement>(null);
+	useClose({
+		isOpen: isMenuOpen,
+		onClose: () => setIsMenuOpen(!isMenuOpen),
 		rootRef: formRef,
-		onChange: () => {
-			onClick?.()
-		},
 	});
 	return (
 		<div ref={formRef}>
-			<ArrowButton isOpen={isOpen} onClick={onClick} />
+			<ArrowButton isOpen={isMenuOpen} onClick={() => setIsMenuOpen(!isMenuOpen)} />
 			<SideForm
-				isOpen={isOpen}
+				isOpen={isMenuOpen}
 				style={style}
 				onUpdate={(option) => handleOptionClick(option, setStyle)}
 			/>

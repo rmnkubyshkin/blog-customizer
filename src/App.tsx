@@ -7,8 +7,6 @@ import {defaultStyle} from "components/article-params-form/ArticleParamsForm";
 
 export const App = () => {
 	const [styleArticle, setStyleArticle] = useState(defaultStyle);
-	const [isMenuOpen, setIsMenuOpen] = useState(false);
-
 	return (
 		<main
 			className={styles.main}
@@ -21,8 +19,6 @@ export const App = () => {
 			} as CSSProperties}
 		>
 	<ArticleParamsForm
-		isOpen={isMenuOpen}
-		onClick={() => setIsMenuOpen(!isMenuOpen)}
 		onUpdate={(style: FormStyleProps) => setStyleArticle(style)}
 	/>
 	<Article />
