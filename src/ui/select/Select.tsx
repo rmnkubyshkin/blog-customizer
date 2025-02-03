@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import {useState, useRef, useEffect} from 'react';
 import type { MouseEventHandler } from 'react';
 import clsx from 'clsx';
 import { OptionType } from 'src/constants/articleProps';
@@ -27,6 +27,8 @@ export const Select = (props: SelectProps) => {
 	const placeholderRef = useRef<HTMLDivElement>(null);
 	const optionClassName = selected?.optionClassName ?? '';
 
+	const [optionSelect, setOptionSelect] = useState(selected);
+
 	useOutsideClickClose({
 		isOpen,
 		rootRef,
@@ -39,26 +41,26 @@ export const Select = (props: SelectProps) => {
 		onChange: setIsOpen,
 	});
 
-	const handleOptionClick = (option: OptionType) => {
+	function handleOptionClick(option: OptionType) {
 		setIsOpen(false);
 		onChange?.(option);
-	};
+		setOptionSelect(option);
+	}
+
 	const handlePlaceHolderClick: MouseEventHandler<HTMLDivElement> = () => {
 		setIsOpen((isOpen) => !isOpen);
 	};
-
 	return (
-		<div className={styles.container}>
+		<div ref={rootRef} className={styles.container}>
 			{title && (
 				<>
-					<Text size={12} weight={800} uppercase>
+					<Text size={12} weight={800} uppercase >
 						{title}
 					</Text>
 				</>
 			)}
 			<div
 				className={styles.selectWrapper}
-				ref={rootRef}
 				data-is-active={isOpen}
 				data-testid='selectWrapper'>
 				<img src={arrowDown} alt='иконка стрелочки' className={styles.arrow} />
@@ -75,11 +77,11 @@ export const Select = (props: SelectProps) => {
 					ref={placeholderRef}>
 					<Text
 						family={
-							isFontFamilyClass(selected?.className)
-								? selected?.className
+							isFontFamilyClass(optionSelect?.className)
+								? optionSelect?.className
 								: undefined
 						}>
-						{selected?.title || placeholder}
+						{optionSelect?.title || placeholder}
 					</Text>
 				</div>
 				{isOpen && (
